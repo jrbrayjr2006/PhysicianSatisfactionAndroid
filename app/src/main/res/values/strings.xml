@@ -1,0 +1,41 @@
+<resources>
+    <string name="app_name">Physician Satisfaction</string>
+    <string name="start_survey">Start Survey</string>
+    <string name="welcome_message">You will need to follow the prompts to complete the survey. The survey should take less than 2 minutes during your day.</string>
+    <string name="value_input_message">We value your input. Please, click on the bottom of the screen to begin your survey.</string>
+    <string name="start_survey_message">We value your input. Please, click on the bottom of the screen to begin your survey.</string>
+
+    <string name="what_issues">What issues contributed to job dissatisfaction? Touch anywhere outside of the text area to dismiss the keypad once you have entered your answer.</string>
+
+    <string name="hospital_operations">Hospital Operations</string>
+    <string name="satisfaction">Satisfaction</string>
+    <string name="response">Response</string>
+    <string name="why_do_you_feel">Why do you feel this way?</string>
+    <string name="survey_completed">Survey Completed</string>
+
+    <string name="submit_survey">Submit Survey</string>
+
+    <!-- Why Feeling This Way -->
+    <string name="hospital_administration">Hospital Administration</string>
+    <string name="staff_interactions">Staff Interactions</string>
+    <string name="communications">Communications</string>
+    <string name="documentation">Documentation</string>
+    <string name="pharmacy">Pharmacy</string>
+    <string name="other">Other</string>
+
+    <string name="next">Next</string>
+
+    <!-- Satisfaction options -->
+    <string-array name="rating">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+</resources>
