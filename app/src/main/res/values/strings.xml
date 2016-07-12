@@ -6,6 +6,7 @@
     <string name="start_survey_message">We value your input. Please, click on the bottom of the screen to begin your survey.</string>
 
     <string name="what_issues">What issues contributed to job dissatisfaction? Touch anywhere outside of the text area to dismiss the keypad once you have entered your answer.</string>
+    <string name="limit_response">Please limit responses to 6 to 20 words</string>
 
     <string name="hospital_operations">Hospital Operations</string>
     <string name="satisfaction">Satisfaction</string>
