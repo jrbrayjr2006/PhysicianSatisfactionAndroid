@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 /**
  * Created by jamesbray on 7/11/16.
@@ -13,6 +14,7 @@ import android.view.ViewGroup;
 public class SurveyCompleteFragment extends MedicalAbstractFragment {
 
     private static final String TAG = "SurveyCompleteFragment";
+    private Button submitSurveyBtn;
 
     OnNextViewListener mCallback;
 
@@ -34,6 +36,13 @@ public class SurveyCompleteFragment extends MedicalAbstractFragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_survey_complete, container, false);
+        submitSurveyBtn = (Button)v.findViewById(R.id.submitSurveyBtn);
+        submitSurveyBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCallback.onSubmitSurvey();
+            }
+        });
 
         //TODO
 

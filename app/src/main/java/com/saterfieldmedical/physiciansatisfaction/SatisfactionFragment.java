@@ -10,6 +10,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 
+import com.saterfieldmedical.physiciansatisfaction.model.Survey;
+
 /**
  * Created by jamesbray on 7/8/16.
  */
@@ -51,7 +53,10 @@ public class SatisfactionFragment extends MedicalAbstractFragment {
         satisfactionNextBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d(TAG, "clicking to get to Why Feeling This Way...");
+                Survey survey = Survey.getInstance();
+                survey.setRating(satifactionSpinner.getSelectedItem().toString());
+                Log.d(TAG, "Rating is " + survey.getRating());
                 mCallback.onGetNextView(WhyFeelingThisWayFragment.getInstance(), getResources().getString(R.string.why_do_you_feel));
             }
         });

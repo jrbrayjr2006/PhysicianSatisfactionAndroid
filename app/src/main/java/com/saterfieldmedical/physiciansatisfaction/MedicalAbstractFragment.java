@@ -18,7 +18,7 @@ public class MedicalAbstractFragment extends Fragment {
 
     public interface OnNextViewListener {
 
-        void onStartSurvey();
+        void onSubmitSurvey();
 
         void onGetNextView(Fragment fragment, String title);
 

@@ -1,5 +1,7 @@
 package com.saterfieldmedical.physiciansatisfaction;
 
+import android.content.Context;
+import android.os.AsyncTask;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
@@ -7,13 +9,18 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.saterfieldmedical.physiciansatisfaction.model.Survey;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity implements MedicalAbstractFragment.OnNextViewListener {
 
     private static final String TAG = "MainActivity";
     private FragmentManager fragmentManager;
     private Fragment homeFragment;
     private Fragment satisfactionFragment;
-    private Fragment healthCareExperienceFragment;
+    protected Survey survey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -27,14 +34,16 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
             homeFragment = new HomeFragment();
             transaction.add(R.id.fragment_container, homeFragment).commit();
         }
+        survey = Survey.getInstance();
     }
 
     @Override
-    public void onStartSurvey() {
-        Log.d(TAG,"ENTER:: onStartSurvey()...");
-        //TODO conditional logic for navigation
-        gotToSatifactionSurvey();
-        Log.d(TAG,"EXIT:: onStartSurvey()...");
+    public void onSubmitSurvey() {
+        Log.d(TAG,"ENTER:: onSubmitSurvey()...");
+        //TODO add logic to submit JSON
+        convertToJson();
+        Log.d(TAG,"EXIT:: onSubmitSurvey()...");
+        this.finish();
     }
 
     /**
@@ -47,6 +56,9 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
     public void onGetNextView(Fragment fragment, String title) {
         Log.d(TAG,"ENTER:: onGetNextView()...");
         //TODO conditional logic for navigation
+        Log.d(TAG, "The rating is:  " + survey.getRating());
+        Log.d(TAG, "Why feeling is:  " + survey.getWhyFeeling());
+        Log.d(TAG, "Response is:  " + survey.getResponse());
         goToNextScreenView(fragment, title);
         Log.d(TAG,"EXIT:: onGetNextView()...");
     }
@@ -74,5 +86,31 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
 
         setTitle(title);
         fragmentManager.beginTransaction().replace(R.id.fragment_container,fragment).commit();
+    }
+
+    private void logout() {
+        this.finish();
+    }
+
+    private JSONObject convertToJson() {
+        JSONObject json = new JSONObject();
+
+        try{
+            json.put("rating", survey.getRating());
+            json.put("whyfeeling", survey.getWhyFeeling());
+            json.put("response", survey.getResponse());
+
+            Log.d(TAG, json.toString());
+        } catch(JSONException jsone) {
+            Log.e(TAG, "Error occurred while creating JSON..." + jsone.getMessage());
+        }
+        return json;
+    }
+
+    class SendDataToServer extends AsyncTask<String,String,String> {
+        @Override
+        protected String doInBackground(String... params) {
+            return null;
+        }
     }
 }
