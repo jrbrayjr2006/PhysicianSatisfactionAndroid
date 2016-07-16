@@ -1,7 +1,9 @@
 package com.saterfieldmedical.physiciansatisfaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.preference.PreferenceManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.Fragment;
@@ -10,6 +12,7 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.saterfieldmedical.physiciansatisfaction.model.Survey;
+import com.saterfieldmedical.physiciansatisfaction.util.RegisterEULA;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -35,6 +38,13 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
             transaction.add(R.id.fragment_container, homeFragment).commit();
         }
         survey = Survey.getInstance();
+
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);  //getPreferences(Context.MODE_PRIVATE);
+        String defaultValue = "no_value";
+        String siteCode = sharedPref.getString(getString(R.string.site_code),defaultValue);
+        if(siteCode.equals(defaultValue)) {
+            new RegisterEULA(this).show();
+        }
     }
 
     @Override
@@ -56,6 +66,12 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
     public void onGetNextView(Fragment fragment, String title) {
         Log.d(TAG,"ENTER:: onGetNextView()...");
         //TODO conditional logic for navigation
+        String defaultValue = "no_value";
+        String key = getString(R.string.site_code);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(this);
+        String siteCode = sharedPref.getString(key,defaultValue);
+        survey.setSiteCode(siteCode);
+        Log.d(TAG, "The site code is:  " + survey.getSiteCode());
         Log.d(TAG, "The rating is:  " + survey.getRating());
         Log.d(TAG, "Why feeling is:  " + survey.getWhyFeeling());
         Log.d(TAG, "Response is:  " + survey.getResponse());
@@ -99,6 +115,7 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
             json.put("rating", survey.getRating());
             json.put("whyfeeling", survey.getWhyFeeling());
             json.put("response", survey.getResponse());
+            json.put("sitecode", survey.getSiteCode());
 
             Log.d(TAG, json.toString());
         } catch(JSONException jsone) {

@@ -1,12 +1,15 @@
 package com.saterfieldmedical.physiciansatisfaction;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+
+import com.saterfieldmedical.physiciansatisfaction.model.Survey;
 
 /**
  * Created by jamesbray on 7/6/16.
@@ -34,6 +37,12 @@ public class HomeFragment extends MedicalAbstractFragment {
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Survey survey = Survey.getInstance();
+                //SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_APPEND);
+                //String defaultValue = "no_value";
+                //String key = getString(R.string.site_code);
+                //String siteCode = sharedPref.getString(key,defaultValue);
+                //survey.setSiteCode(siteCode);
                 mCallback.onGetNextView(SatisfactionFragment.getInstance(), getResources().getString(R.string.satisfaction));
             }
         });

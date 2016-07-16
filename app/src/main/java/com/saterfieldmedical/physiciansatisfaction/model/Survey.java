@@ -8,6 +8,7 @@ public class Survey {
     private String rating;
     private String whyFeeling;
     private String response;
+    private String siteCode;
     private static Survey survey;
 
     public static Survey getInstance() {
@@ -42,5 +43,13 @@ public class Survey {
 
     public void setWhyFeeling(String whyFeeling) {
         this.whyFeeling = whyFeeling;
+    }
+
+    public String getSiteCode() {
+        return siteCode;
+    }
+
+    public void setSiteCode(String siteCode) {
+        this.siteCode = siteCode;
     }
 }
