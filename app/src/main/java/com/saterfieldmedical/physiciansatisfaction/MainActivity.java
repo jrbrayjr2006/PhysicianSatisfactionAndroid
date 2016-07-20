@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
         Log.d(TAG, "The url is:  " + url);
         task.execute(url);
         Log.d(TAG,"EXIT:: onSubmitSurvey()...");
-        //this.finish();
+        this.finish();
     }
 
     /**
