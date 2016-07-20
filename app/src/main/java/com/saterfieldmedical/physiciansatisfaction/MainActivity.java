@@ -26,6 +26,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLEncoder;
 
 public class MainActivity extends AppCompatActivity implements MedicalAbstractFragment.OnNextViewListener {
 
@@ -135,8 +136,12 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
         url.append(BASE_URL);
         url.append(survey.getSiteCode()).append("/");
         url.append(survey.getRating()).append("/");
-        url.append(survey.getWhyFeeling()).append("/");
-        url.append(survey.getResponse()).append("/");  //this is the comment
+        try {
+            url.append(URLEncoder.encode(survey.getWhyFeeling(), "UTF-8")).append("/");
+            url.append(URLEncoder.encode(survey.getResponse(), "UTF-8")).append("/");  //this is the comment
+        } catch(UnsupportedEncodingException usee) {
+            Log.e(TAG, usee.getMessage());
+        }
 
         return url.toString();
     }
