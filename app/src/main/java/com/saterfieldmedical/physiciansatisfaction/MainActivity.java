@@ -10,6 +10,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.saterfieldmedical.physiciansatisfaction.model.Survey;
 import com.saterfieldmedical.physiciansatisfaction.util.RegisterEULA;
@@ -17,9 +18,20 @@ import com.saterfieldmedical.physiciansatisfaction.util.RegisterEULA;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.UnsupportedEncodingException;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+
 public class MainActivity extends AppCompatActivity implements MedicalAbstractFragment.OnNextViewListener {
 
     private static final String TAG = "MainActivity";
+    private static final String BASE_URL = "http://www.strawberry23.net:8080/satterfieldmedical/insert/";
+
     private FragmentManager fragmentManager;
     private Fragment homeFragment;
     private Fragment satisfactionFragment;
@@ -50,10 +62,13 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
     @Override
     public void onSubmitSurvey() {
         Log.d(TAG,"ENTER:: onSubmitSurvey()...");
-        //TODO add logic to submit JSON
         convertToJson();
+        SendDataToServerTask task = new SendDataToServerTask();
+        String url = generateUrl(survey);
+        Log.d(TAG, "The url is:  " + url);
+        task.execute(url);
         Log.d(TAG,"EXIT:: onSubmitSurvey()...");
-        this.finish();
+        //this.finish();
     }
 
     /**
@@ -108,6 +123,24 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
         this.finish();
     }
 
+    /**
+     * <p>
+     *     <code>http://localhost:8080/satterfieldmedical/insert/DEMO/5/staff/something/</code>
+     * </p>
+     * @param s
+     * @return
+     */
+    private String generateUrl(Survey s) {
+        StringBuffer url = new StringBuffer();
+        url.append(BASE_URL);
+        url.append(survey.getSiteCode()).append("/");
+        url.append(survey.getRating()).append("/");
+        url.append(survey.getWhyFeeling()).append("/");
+        url.append(survey.getResponse()).append("/");  //this is the comment
+
+        return url.toString();
+    }
+
     private JSONObject convertToJson() {
         JSONObject json = new JSONObject();
 
@@ -124,10 +157,65 @@ public class MainActivity extends AppCompatActivity implements MedicalAbstractFr
         return json;
     }
 
-    class SendDataToServer extends AsyncTask<String,String,String> {
+    class SendDataToServerTask extends AsyncTask<String,Void,String> {
         @Override
         protected String doInBackground(String... params) {
+            String result = postSurveyResponse(params[0]);
+            return result;
+        }
+
+        @Override
+        protected void onPostExecute(String result) {
+            Toast.makeText(MainActivity.this, result, Toast.LENGTH_SHORT).show();
+        }
+
+
+        private String postSurveyResponse(String mUrl) {
+            InputStream is = null;
+            int length = 500;
+
+            try {
+                URL url = new URL(mUrl);
+                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setReadTimeout(10000);
+                conn.setConnectTimeout(15000);
+                conn.setRequestMethod("POST");
+                conn.setDoInput(true);
+                conn.connect();
+                int responseCode = conn.getResponseCode();
+                Log.d(TAG, "The response is:  " + responseCode);
+                is = conn.getInputStream();
+                String result = convertInputToString(is, length);
+                return result;
+
+            } catch(MalformedURLException mfue) {
+                Log.e(TAG, mfue.getMessage());
+            } catch(IOException ioe) {
+                Log.e(TAG, ioe.getMessage());
+            } finally {
+                if(is != null) {
+                    try {
+                        is.close();
+                    } catch(IOException ioe) {
+                        //do nothing
+                    }
+                }
+            }
             return null;
+        }
+
+        public String convertInputToString(InputStream stream, int length) {
+            Reader reader = null;
+            char[] buffer = new char[length];
+            try {
+                reader = new InputStreamReader(stream, "UTF-8");
+                reader.read(buffer);
+            } catch(UnsupportedEncodingException usee) {
+                Log.e(TAG, usee.getMessage());
+            } catch(IOException ioe) {
+                Log.e(TAG, ioe.getMessage());
+            }
+            return new String(buffer);
         }
     }
 }
