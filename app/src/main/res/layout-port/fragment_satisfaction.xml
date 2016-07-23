@@ -5,11 +5,20 @@
     android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/satisfactionTitleTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textAlignment="center"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:text="@string/satisfaction"
+        android:layout_marginBottom="20dp"/>
+
+    <TextView
+        android:id="@+id/howRateTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="@string/how_rate"
         android:layout_marginBottom="20dp"/>
 
     <Spinner
